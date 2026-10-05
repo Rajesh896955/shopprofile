@@ -1,10 +1,15 @@
-
 "use client";
-
 import { FormEvent, useState } from "react";
 import Link from "next/link";
-import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation";
+import {
+    createUserWithEmailAndPassword,
+    signInWithPopup,
+    GoogleAuthProvider,
+    updateProfile,
+} from "firebase/auth";
+import { Eye, EyeOff } from "lucide-react";
+import { auth } from "@/lib/firebase";
 
 export default function SignupPage() {
     const router = useRouter();
@@ -26,13 +31,13 @@ export default function SignupPage() {
 
         setError("");
 
-        if (!name || !email || !password || !confirmPassword) {
+        if (!name.trim() || !email.trim() || !password || !confirmPassword) {
             setError("Please fill in all fields.");
             return;
         }
 
-        if (password.length < 8) {
-            setError("Password must be at least 8 characters.");
+        if (password.length < 6) {
+            setError("Password must be at least 6 characters.");
             return;
         }
 
@@ -44,40 +49,48 @@ export default function SignupPage() {
         try {
             setLoading(true);
 
-            const response = await fetch("/api/auth/register", {
+            // 1. Create user in Firebase Auth
+            const userCredential = await createUserWithEmailAndPassword(auth, email.trim(), password);
+            const user = userCredential.user;
+
+            // 2. Update user profile display name
+            await updateProfile(user, {
+                displayName: name.trim(),
+            });
+
+            // 3. Send data to secure API route (/api/signup) to store in Firestore "shop-users"
+            const apiRes = await fetch("/api/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    name,
-                    email,
-                    password,
+                    uid: user.uid,
+                    name: name.trim(),
+                    email: user.email,
+                    photoURL: user.photoURL || null,
+                    authProvider: "email",
+                    role: "user",
                 }),
             });
 
-            const data = await response.json();
-
-            if (!response.ok) {
-                setError(data.message || "Unable to create account.");
-                return;
+            const apiData = await apiRes.json();
+            if (!apiRes.ok || !apiData.success) {
+                console.warn("Backend sync notice:", apiData.message);
             }
 
-            const loginResult = await signIn("credentials", {
-                email,
-                password,
-                redirect: false,
-            });
-
-            if (loginResult?.error) {
-                router.push("/login");
-                return;
-            }
-
-            router.push("/dashboard");
             router.refresh();
-        } catch {
-            setError("Something went wrong. Please try again.");
+        } catch (err: unknown) {
+            const firebaseErr = err as { code?: string; message?: string };
+            if (firebaseErr.code === "auth/email-already-in-use") {
+                setError("This email is already registered. Please sign in.");
+            } else if (firebaseErr.code === "auth/invalid-email") {
+                setError("Please enter a valid email address.");
+            } else if (firebaseErr.code === "auth/weak-password") {
+                setError("Password must be at least 6 characters.");
+            } else {
+                setError(firebaseErr.message || "Failed to create account. Please try again.");
+            }
         } finally {
             setLoading(false);
         }
@@ -86,12 +99,45 @@ export default function SignupPage() {
     const handleGoogleSignup = async () => {
         try {
             setGoogleLoading(true);
+            setError("");
 
-            await signIn("google", {
-                callbackUrl: "/dashboard",
+            const provider = new GoogleAuthProvider();
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+
+            // Send data to secure API route (/api/signup) to store in Firestore "shop-users"
+            const apiRes = await fetch("/api/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    uid: user.uid,
+                    name: user.displayName || name.trim() || "User",
+                    email: user.email,
+                    photoURL: user.photoURL || null,
+                    authProvider: "google",
+                    role: "user",
+                }),
             });
-        } catch {
-            setError("Google signup failed. Please try again.");
+
+            const apiData = await apiRes.json();
+            if (!apiRes.ok || !apiData.success) {
+                console.warn("Backend sync notice:", apiData.message);
+            }
+
+
+            router.refresh();
+        } catch (err: unknown) {
+            const firebaseErr = err as { code?: string; message?: string };
+            if (firebaseErr.code === "auth/popup-closed-by-user") {
+                setError("Google sign up was cancelled.");
+            } else if (firebaseErr.code === "auth/account-exists-with-different-credential") {
+                setError("An account already exists with the same email.");
+            } else {
+                setError(firebaseErr.message || "Google signup failed. Please try again.");
+            }
+        } finally {
             setGoogleLoading(false);
         }
     };
@@ -105,23 +151,7 @@ export default function SignupPage() {
                     <div className="relative hidden min-h-[700px] overflow-hidden bg-slate-900 p-12 text-white lg:flex lg:flex-col lg:justify-between">
                         <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-blue-500/30 blur-3xl" />
                         <div className="absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-indigo-500/30 blur-3xl" />
-
-                        <div className="relative z-10">
-                            <Link href="/" className="inline-flex items-center gap-3">
-                                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-xl font-bold text-slate-900">
-                                    S
-                                </div>
-
-                                <span className="text-2xl font-bold">
-                                    ShopProfile
-                                </span>
-                            </Link>
-                        </div>
-
                         <div className="relative z-10 max-w-md">
-                            <span className="mb-4 inline-block rounded-full bg-white/10 px-4 py-2 text-sm text-white/80">
-                                Start for free
-                            </span>
 
                             <h1 className="text-4xl font-bold leading-tight xl:text-5xl">
                                 Build your
@@ -197,46 +227,7 @@ export default function SignupPage() {
                                 </div>
                             )}
 
-                            <button
-                                type="button"
-                                onClick={handleGoogleSignup}
-                                disabled={googleLoading || loading}
-                                className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
-                            >
-                                {googleLoading ? (
-                                    <span className="h-5 w-5 animate-spin rounded-full border-2 border-slate-300 border-t-slate-800" />
-                                ) : (
-                                    <svg width="20" height="20" viewBox="0 0 24 24">
-                                        <path
-                                            fill="#4285F4"
-                                            d="M23.49 12.27c0-.79-.07-1.55-.2-2.27H12v4.3h6.45a5.51 5.51 0 0 1-2.4 3.62v3.01h3.88c2.27-2.09 3.56-5.17 3.56-8.66Z"
-                                        />
-                                        <path
-                                            fill="#34A853"
-                                            d="M12 24c3.24 0 5.95-1.07 7.93-2.91l-3.88-3.01c-1.07.72-2.44 1.15-4.05 1.15-3.12 0-5.77-2.11-6.72-4.95H1.27v3.1A12 12 0 0 0 12 24Z"
-                                        />
-                                        <path
-                                            fill="#FBBC05"
-                                            d="M5.28 14.28A7.22 7.22 0 0 1 4.9 12c0-.79.14-1.56.38-2.28v-3.1H1.27A12 12 0 0 0 0 12c0 1.94.46 3.77 1.27 5.38l4.01-3.1Z"
-                                        />
-                                        <path
-                                            fill="#EA4335"
-                                            d="M12 4.77c1.76 0 3.34.61 4.59 1.8l3.44-3.44C17.94 1.19 15.24 0 12 0A12 12 0 0 0 1.27 6.62l4.01 3.1C6.23 6.88 8.88 4.77 12 4.77Z"
-                                        />
-                                    </svg>
-                                )}
-
-                                {googleLoading ? "Connecting..." : "Continue with Google"}
-                            </button>
-
-                            <div className="my-7 flex items-center gap-4">
-                                <div className="h-px flex-1 bg-slate-200" />
-                                <span className="text-xs font-medium uppercase tracking-wider text-slate-400">
-                                    or sign up with email
-                                </span>
-                                <div className="h-px flex-1 bg-slate-200" />
-                            </div>
-
+                            {/* Email Signup Form */}
                             <form onSubmit={handleSignup} className="space-y-4">
 
                                 <div>
@@ -290,18 +281,23 @@ export default function SignupPage() {
                                             id="password"
                                             type={showPassword ? "text" : "password"}
                                             autoComplete="new-password"
-                                            placeholder="Minimum 8 characters"
+                                            placeholder="Minimum 6 characters"
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
-                                            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 pr-20 text-sm outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:bg-white focus:ring-4 focus:ring-slate-900/5"
+                                            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 pr-12 text-sm outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:bg-white focus:ring-4 focus:ring-slate-900/5"
                                         />
 
                                         <button
                                             type="button"
                                             onClick={() => setShowPassword((value) => !value)}
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg px-2 py-1 text-xs font-semibold text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-slate-500 hover:bg-slate-200/60 hover:text-slate-900 transition-colors"
+                                            aria-label={showPassword ? "Hide password" : "Show password"}
                                         >
-                                            {showPassword ? "Hide" : "Show"}
+                                            {showPassword ? (
+                                                <EyeOff className="h-5 w-5" />
+                                            ) : (
+                                                <Eye className="h-5 w-5" />
+                                            )}
                                         </button>
                                     </div>
                                 </div>
@@ -322,7 +318,7 @@ export default function SignupPage() {
                                             placeholder="Repeat your password"
                                             value={confirmPassword}
                                             onChange={(e) => setConfirmPassword(e.target.value)}
-                                            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 pr-20 text-sm outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:bg-white focus:ring-4 focus:ring-slate-900/5"
+                                            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 pr-12 text-sm outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:bg-white focus:ring-4 focus:ring-slate-900/5"
                                         />
 
                                         <button
@@ -330,9 +326,14 @@ export default function SignupPage() {
                                             onClick={() =>
                                                 setShowConfirmPassword((value) => !value)
                                             }
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg px-2 py-1 text-xs font-semibold text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-slate-500 hover:bg-slate-200/60 hover:text-slate-900 transition-colors"
+                                            aria-label={showConfirmPassword ? "Hide password" : "Show password"}
                                         >
-                                            {showConfirmPassword ? "Hide" : "Show"}
+                                            {showConfirmPassword ? (
+                                                <EyeOff className="h-5 w-5" />
+                                            ) : (
+                                                <Eye className="h-5 w-5" />
+                                            )}
                                         </button>
                                     </div>
                                 </div>
@@ -368,6 +369,48 @@ export default function SignupPage() {
                                 </button>
                             </form>
 
+                            {/* Divider */}
+                            <div className="my-7 flex items-center gap-4">
+                                <div className="h-px flex-1 bg-slate-200" />
+                                <span className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                                    or sign up with
+                                </span>
+                                <div className="h-px flex-1 bg-slate-200" />
+                            </div>
+
+                            {/* Google Signup Button */}
+                            <button
+                                type="button"
+                                onClick={handleGoogleSignup}
+                                disabled={googleLoading || loading}
+                                className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+                            >
+                                {googleLoading ? (
+                                    <span className="h-5 w-5 animate-spin rounded-full border-2 border-slate-300 border-t-slate-800" />
+                                ) : (
+                                    <svg width="20" height="20" viewBox="0 0 24 24">
+                                        <path
+                                            fill="#4285F4"
+                                            d="M23.49 12.27c0-.79-.07-1.55-.2-2.27H12v4.3h6.45a5.51 5.51 0 0 1-2.4 3.62v3.01h3.88c2.27-2.09 3.56-5.17 3.56-8.66Z"
+                                        />
+                                        <path
+                                            fill="#34A853"
+                                            d="M12 24c3.24 0 5.95-1.07 7.93-2.91l-3.88-3.01c-1.07.72-2.44 1.15-4.05 1.15-3.12 0-5.77-2.11-6.72-4.95H1.27v3.1A12 12 0 0 0 12 24Z"
+                                        />
+                                        <path
+                                            fill="#FBBC05"
+                                            d="M5.28 14.28A7.22 7.22 0 0 1 4.9 12c0-.79.14-1.56.38-2.28v-3.1H1.27A12 12 0 0 0 0 12c0 1.94.46 3.77 1.27 5.38l4.01-3.1Z"
+                                        />
+                                        <path
+                                            fill="#EA4335"
+                                            d="M12 4.77c1.76 0 3.34.61 4.59 1.8l3.44-3.44C17.94 1.19 15.24 0 12 0A12 12 0 0 0 1.27 6.62l4.01 3.1C6.23 6.88 8.88 4.77 12 4.77Z"
+                                        />
+                                    </svg>
+                                )}
+
+                                {googleLoading ? "Connecting..." : "Continue with Google"}
+                            </button>
+
                             <p className="mt-8 text-center text-sm text-slate-500">
                                 Already have an account?{" "}
                                 <Link
@@ -385,4 +428,3 @@ export default function SignupPage() {
         </main>
     );
 }
-

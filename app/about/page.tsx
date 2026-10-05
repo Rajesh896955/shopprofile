@@ -61,7 +61,7 @@ export default function AboutPage() {
             <section className="relative overflow-hidden bg-slate-950">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.25),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(14,165,233,0.15),transparent_35%)]" />
 
-                <div className="relative mx-auto max-w-7xl px-5 py-20 sm:px-6 lg:px-8 lg:py-28">
+                <div className="relative mx-auto max-w-7xl px-5 py-5 sm:px-6 lg:px-8 lg:py-8">
                     <div className="max-w-3xl">
                         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 backdrop-blur">
                             <Zap className="h-4 w-4 text-indigo-400" />
@@ -81,28 +81,12 @@ export default function AboutPage() {
                             through one simple link and QR code.
                         </p>
 
-                        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                            <Link
-                                href="/signup"
-                                className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 font-semibold text-slate-950 transition hover:bg-slate-100"
-                            >
-                                Create Your Profile
-                                <ArrowRight className="h-4 w-4" />
-                            </Link>
-
-                            <Link
-                                href="/"
-                                className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/5 px-6 py-3.5 font-semibold text-white transition hover:bg-white/10"
-                            >
-                                Explore ShopProfile
-                            </Link>
-                        </div>
                     </div>
                 </div>
             </section>
 
             {/* About */}
-            <section className="mx-auto max-w-7xl px-5 py-20 sm:px-6 lg:px-8 lg:py-24">
+            <section className="mx-auto max-w-7xl px-5 py-5 sm:px-6 lg:px-8 lg:py-8">
                 <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
                     <div>
                         <p className="text-sm font-bold uppercase tracking-wider text-indigo-600">
@@ -190,7 +174,7 @@ export default function AboutPage() {
             </section>
 
             {/* Features */}
-            <section className="bg-slate-50 py-20 sm:py-24">
+            <section className="bg-slate-50 py-6 sm:py-8">
                 <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
                     <div className="mx-auto max-w-2xl text-center">
                         <p className="text-sm font-bold uppercase tracking-wider text-indigo-600">
@@ -235,7 +219,7 @@ export default function AboutPage() {
             </section>
 
             {/* Mission */}
-            <section className="mx-auto max-w-7xl px-5 py-20 sm:px-6 lg:px-8 lg:py-24">
+            <section className="mx-auto max-w-7xl px-5 py-6 sm:px-6 lg:px-8 lg:py-8">
                 <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 to-blue-700">
                     <div className="grid lg:grid-cols-2">
                         <div className="p-8 sm:p-12 lg:p-16">
@@ -356,36 +340,7 @@ export default function AboutPage() {
                 </div>
             </section>
 
-            {/* CTA */}
-            <section className="border-t border-slate-200 bg-slate-50">
-                <div className="mx-auto max-w-4xl px-5 py-20 text-center sm:px-6 lg:py-24">
-                    <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                        Ready to create your digital shop?
-                    </h2>
 
-                    <p className="mx-auto mt-4 max-w-2xl text-slate-600">
-                        Create your ShopProfile and give your customers one simple place
-                        to discover your business and products.
-                    </p>
-
-                    <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-                        <Link
-                            href="/signup"
-                            className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-950 px-6 py-3.5 font-semibold text-white transition hover:bg-slate-800"
-                        >
-                            Get Started
-                            <ArrowRight className="h-4 w-4" />
-                        </Link>
-
-                        <Link
-                            href="/contact"
-                            className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-6 py-3.5 font-semibold text-slate-900 transition hover:bg-slate-100"
-                        >
-                            Contact Us
-                        </Link>
-                    </div>
-                </div>
-            </section>
         </main>
     );
 }

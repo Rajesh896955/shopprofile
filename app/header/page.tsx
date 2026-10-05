@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
     Menu,
     X,
@@ -13,17 +13,43 @@ import {
     Info,
     Mail,
     LogIn,
-    UserPlus,
+    LogOut,
+    Store,
+    User as UserIcon,
 } from "lucide-react";
+import { signOut } from "firebase/auth";
+import { auth } from "@/lib/firebase";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function Header() {
+    const { user, loading } = useAuth();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [productsOpen, setProductsOpen] = useState(false);
+    const [userMenuOpen, setUserMenuOpen] = useState(false);
+    const userMenuRef = useRef<HTMLDivElement>(null);
 
     const closeMobileMenu = () => {
         setMobileMenuOpen(false);
         setProductsOpen(false);
     };
+
+    // Close user dropdown if clicked outside
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+                setUserMenuOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    // Get the first letter of email or display name
+    const emailInitial = user?.email
+        ? user.email.trim().charAt(0).toUpperCase()
+        : user?.displayName
+            ? user.displayName.trim().charAt(0).toUpperCase()
+            : "U";
 
     return (
         <header className="sticky top-0 z-50 w-full border-b border-slate-200/80 bg-white/95 backdrop-blur-xl">
@@ -70,7 +96,7 @@ export default function Header() {
                         <button
                             type="button"
                             onClick={() => setProductsOpen(!productsOpen)}
-                            className="flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-bold text-slate-800 transition hover:bg-slate-50 hover:text-indigo-600"
+                            className="flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-bold text-slate-800 transition hover:bg-slate-50 hover:text-indigo-600 cursor-pointer"
                             aria-expanded={productsOpen}
                         >
                             <span>Features</span>
@@ -166,28 +192,65 @@ export default function Header() {
 
                 {/* Desktop Actions */}
                 <div className="hidden items-center gap-2 lg:flex">
-                    <Link
-                        href="/login"
-                        className="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold text-slate-800 transition hover:bg-slate-50 hover:text-slate-950"
-                    >
-                        <LogIn className="h-4 w-4 text-slate-600" />
-                        Login
-                    </Link>
+                    {loading ? (
+                        <div className="h-10 w-24 animate-pulse rounded-xl bg-slate-100" />
+                    ) : user ? (
+                        <div className="relative" ref={userMenuRef}>
+                            <button
+                                type="button"
+                                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                                className="flex items-center gap-2 rounded-full p-1 pl-1.5 pr-2.5 hover:bg-slate-100/90 transition-all border border-slate-200/90 shadow-2xs group cursor-pointer active:scale-95"
+                                title={user.email || "My Account"}
+                            >
+                                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-600 to-blue-500 text-white font-black text-sm flex items-center justify-center shadow-xs">
+                                    {emailInitial}
+                                </div>
 
-                    <Link
-                        href="/signup"
-                        className="inline-flex items-center gap-2 rounded-xl bg-slate-950 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-indigo-600"
-                    >
-                        <UserPlus className="h-4 w-4" />
-                        Get Started
-                    </Link>
+                                <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${userMenuOpen ? "rotate-180 text-indigo-600" : ""}`} />
+                            </button>
+
+                            {/* User Profile Dropdown */}
+                            {userMenuOpen && (
+                                <div className="absolute right-0 top-full mt-1.5 w-44 rounded-2xl bg-white border border-slate-200/90 shadow-xl shadow-slate-900/10 p-1.5 z-50 animate-in fade-in zoom-in-95 duration-150 origin-top-right">
+                                    <div className="space-y-0.5">
+                                        <Link
+                                            href="/myProfile"
+                                            onClick={() => setUserMenuOpen(false)}
+                                            className="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-slate-700 hover:text-indigo-600 hover:bg-indigo-50/70 rounded-xl transition"
+                                        >
+                                            <Store className="w-4 h-4 text-indigo-600 shrink-0" />
+                                            <span className="whitespace-nowrap">My Shop Profile</span>
+                                        </Link>
+                                        <button
+                                            type="button"
+                                            onClick={async () => {
+                                                setUserMenuOpen(false);
+                                                await signOut(auth);
+                                            }}
+                                            className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50 rounded-xl transition text-left cursor-pointer"
+                                        >
+                                            <LogOut className="w-4 h-4 shrink-0" />
+                                            <span className="whitespace-nowrap">Sign Out</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    ) : (
+                        <Link
+                            href="/login"
+                            className="inline-flex items-center gap-2 rounded-xl bg-slate-950 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-indigo-600 active:scale-95"
+                        >
+                            Login
+                        </Link>
+                    )}
                 </div>
 
                 {/* Mobile Menu Button */}
                 <button
                     type="button"
                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-800 transition hover:bg-slate-50 lg:hidden"
+                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-800 transition hover:bg-slate-50 lg:hidden cursor-pointer"
                     aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
                     aria-expanded={mobileMenuOpen}
                 >
@@ -286,24 +349,47 @@ export default function Header() {
                         </nav>
 
                         {/* Mobile Actions */}
-                        <div className="mt-4 grid grid-cols-2 gap-3 border-t border-slate-100 pt-4">
-                            <Link
-                                href="/login"
-                                onClick={closeMobileMenu}
-                                className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-bold text-slate-800 transition hover:bg-slate-50"
-                            >
-                                <LogIn className="h-4 w-4" />
-                                Login
-                            </Link>
-
-                            <Link
-                                href="/signup"
-                                onClick={closeMobileMenu}
-                                className="flex items-center justify-center gap-2 rounded-xl bg-slate-950 px-4 py-3 text-sm font-bold text-white transition hover:bg-indigo-600"
-                            >
-                                <UserPlus className="h-4 w-4" />
-                                Get Started
-                            </Link>
+                        <div className="mt-4 border-t border-slate-100 pt-4">
+                            {user ? (
+                                <div className="space-y-2">
+                                    <div className="flex items-center gap-3 px-3 py-2 rounded-2xl bg-slate-50 border border-slate-100">
+                                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-600 to-blue-500 text-white font-black text-base flex items-center justify-center shadow-xs shrink-0">
+                                            {emailInitial}
+                                        </div>
+                                        <div className="min-w-0 flex-1">
+                                            <p className="text-[10px] font-black uppercase tracking-wider text-slate-400">Signed in</p>
+                                            <p className="text-xs font-bold text-slate-900 truncate">{user.email}</p>
+                                        </div>
+                                    </div>
+                                    <Link
+                                        href="/myProfile"
+                                        onClick={closeMobileMenu}
+                                        className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-indigo-700"
+                                    >
+                                        <Store className="w-4 h-4" />
+                                        My Shop Profile
+                                    </Link>
+                                    <button
+                                        type="button"
+                                        onClick={async () => {
+                                            closeMobileMenu();
+                                            await signOut(auth);
+                                        }}
+                                        className="flex w-full items-center justify-center gap-2 rounded-xl border border-rose-200 text-rose-600 px-4 py-2.5 text-sm font-bold transition hover:bg-rose-50 cursor-pointer"
+                                    >
+                                        <LogOut className="w-4 h-4" />
+                                        Sign Out
+                                    </button>
+                                </div>
+                            ) : (
+                                <Link
+                                    href="/login"
+                                    onClick={closeMobileMenu}
+                                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-950 px-4 py-3 text-sm font-bold text-white transition hover:bg-indigo-600"
+                                >
+                                    Login
+                                </Link>
+                            )}
                         </div>
                     </div>
                 </div>

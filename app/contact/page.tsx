@@ -61,7 +61,7 @@ export default function ContactPage() {
             <section className="relative overflow-hidden bg-slate-950">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.28),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(14,165,233,0.16),transparent_35%)]" />
 
-                <div className="relative mx-auto max-w-7xl px-5 py-20 sm:px-6 lg:px-8 lg:py-24">
+                <div className="relative mx-auto max-w-7xl px-5 py-6 sm:px-6 lg:px-8 lg:py-8">
                     <div className="mx-auto max-w-3xl text-center">
                         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200">
                             <MessageCircle className="h-4 w-4 text-indigo-400" />
@@ -117,7 +117,7 @@ export default function ContactPage() {
             </section>
 
             {/* Main Contact Area */}
-            <section className="bg-slate-50 py-20 sm:py-24">
+            <section className="bg-slate-50 py-6 sm:py-8">
                 <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
                     <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
                         {/* Left Content */}
@@ -328,7 +328,7 @@ export default function ContactPage() {
             </section>
 
             {/* FAQ CTA */}
-            <section className="mx-auto max-w-7xl px-5 py-20 sm:px-6 lg:px-8">
+            <section className="mx-auto max-w-7xl px-5 py-6 sm:px-6 lg:px-8">
                 <div className="rounded-3xl bg-gradient-to-br from-indigo-600 to-blue-700 p-8 text-center sm:p-12 lg:p-16">
                     <h2 className="text-3xl font-bold text-white sm:text-4xl">
                         Looking for answers?

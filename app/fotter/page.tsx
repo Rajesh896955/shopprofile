@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
-  Mail,
-  ArrowUpRight,
+    Mail,
+    ArrowUpRight,
 } from "lucide-react";
 
 export default function Footer() {
@@ -154,12 +154,6 @@ export default function Footer() {
                             </FooterLink>
                         </ul>
 
-                        <div className="mt-6 rounded-xl border border-slate-800 bg-slate-900/60 p-4">
-                            <p className="text-xs leading-5 text-slate-500">
-                                Please review our policies before using paid services or
-                                publishing business information on ShopProfile.
-                            </p>
-                        </div>
                     </div>
                 </div>
             </div>
