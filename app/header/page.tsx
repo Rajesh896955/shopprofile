@@ -91,82 +91,15 @@ export default function Header() {
                         Home
                     </Link>
 
-                    {/* Features Dropdown */}
-                    <div className="relative">
-                        <button
-                            type="button"
-                            onClick={() => setProductsOpen(!productsOpen)}
-                            className="flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-bold text-slate-800 transition hover:bg-slate-50 hover:text-indigo-600 cursor-pointer"
-                            aria-expanded={productsOpen}
-                        >
-                            <span>Features</span>
-                            <ChevronDown
-                                className={`h-4 w-4 transition-transform duration-200 ${productsOpen ? "rotate-180 text-indigo-600" : "text-slate-400"
-                                    }`}
-                            />
-                        </button>
+                    <Link
+                        href="/services"
+                        onClick={closeMobileMenu}
+                        className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 hover:bg-slate-50"
+                    >
 
-                        {productsOpen && (
-                            <div className="absolute left-0 top-full mt-2 w-64 overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 shadow-xl shadow-slate-900/10">
-                                <Link
-                                    href="/services"
-                                    onClick={() => setProductsOpen(false)}
-                                    className="flex items-start gap-3 rounded-xl p-3 transition hover:bg-slate-50"
-                                >
-                                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-indigo-50">
-                                        <Sparkles className="h-4 w-4 text-indigo-600" />
-                                    </div>
+                        Services
+                    </Link>
 
-                                    <div>
-                                        <p className="text-sm font-bold text-slate-900">
-                                            Digital Shop
-                                        </p>
-                                        <p className="mt-0.5 text-xs font-medium text-slate-500">
-                                            Create your online shop profile
-                                        </p>
-                                    </div>
-                                </Link>
-
-                                <Link
-                                    href="/dashboard/products"
-                                    onClick={() => setProductsOpen(false)}
-                                    className="flex items-start gap-3 rounded-xl p-3 transition hover:bg-slate-50"
-                                >
-                                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50">
-                                        <LayoutDashboard className="h-4 w-4 text-blue-600" />
-                                    </div>
-
-                                    <div>
-                                        <p className="text-sm font-bold text-slate-900">
-                                            Product Showcase
-                                        </p>
-                                        <p className="mt-0.5 text-xs font-medium text-slate-500">
-                                            Add and manage your products
-                                        </p>
-                                    </div>
-                                </Link>
-
-                                <Link
-                                    href="/pricing"
-                                    onClick={() => setProductsOpen(false)}
-                                    className="flex items-start gap-3 rounded-xl p-3 transition hover:bg-slate-50"
-                                >
-                                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-50">
-                                        <CreditCard className="h-4 w-4 text-emerald-600" />
-                                    </div>
-
-                                    <div>
-                                        <p className="text-sm font-bold text-slate-900">
-                                            Plans & Pricing
-                                        </p>
-                                        <p className="mt-0.5 text-xs font-medium text-slate-500">
-                                            Choose a plan for your business
-                                        </p>
-                                    </div>
-                                </Link>
-                            </div>
-                        )}
-                    </div>
 
                     <Link
                         href="/pricing"
@@ -190,19 +123,19 @@ export default function Header() {
                     </Link>
                 </nav>
 
-                {/* Desktop Actions */}
-                <div className="hidden items-center gap-2 lg:flex">
+                {/* Header Actions */}
+                <div className="flex items-center gap-2">
                     {loading ? (
-                        <div className="h-10 w-24 animate-pulse rounded-xl bg-slate-100" />
+                        <div className="h-9 w-20 sm:h-10 sm:w-24 animate-pulse rounded-xl bg-slate-100 shrink-0" />
                     ) : user ? (
                         <div className="relative" ref={userMenuRef}>
                             <button
                                 type="button"
                                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                                className="flex items-center gap-2 rounded-full p-1 pl-1.5 pr-2.5 hover:bg-slate-100/90 transition-all border border-slate-200/90 shadow-2xs group cursor-pointer active:scale-95"
+                                className="flex items-center gap-1.5 sm:gap-2 rounded-full p-1 pl-1.5 pr-2 sm:pr-2.5 hover:bg-slate-100/90 transition-all border border-slate-200/90 shadow-2xs group cursor-pointer active:scale-95"
                                 title={user.email || "My Account"}
                             >
-                                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-600 to-blue-500 text-white font-black text-sm flex items-center justify-center shadow-xs">
+                                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-tr from-indigo-600 to-blue-500 text-white font-black text-xs sm:text-sm flex items-center justify-center shadow-xs">
                                     {emailInitial}
                                 </div>
 
@@ -239,27 +172,27 @@ export default function Header() {
                     ) : (
                         <Link
                             href="/login"
-                            className="inline-flex items-center gap-2 rounded-xl bg-slate-950 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-indigo-600 active:scale-95"
+                            className="inline-flex w-20 sm:w-24 h-9 sm:h-10 items-center justify-center rounded-xl bg-slate-950 text-xs sm:text-sm font-bold text-white shadow-sm transition hover:bg-indigo-600 active:scale-95 shrink-0"
                         >
                             Login
                         </Link>
                     )}
-                </div>
 
-                {/* Mobile Menu Button */}
-                <button
-                    type="button"
-                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-800 transition hover:bg-slate-50 lg:hidden cursor-pointer"
-                    aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-                    aria-expanded={mobileMenuOpen}
-                >
-                    {mobileMenuOpen ? (
-                        <X className="h-5 w-5" />
-                    ) : (
-                        <Menu className="h-5 w-5" />
-                    )}
-                </button>
+                    {/* Mobile Menu Button */}
+                    <button
+                        type="button"
+                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-800 transition hover:bg-slate-50 lg:hidden cursor-pointer shrink-0"
+                        aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                        aria-expanded={mobileMenuOpen}
+                    >
+                        {mobileMenuOpen ? (
+                            <X className="h-5 w-5" />
+                        ) : (
+                            <Menu className="h-5 w-5" />
+                        )}
+                    </button>
+                </div>
             </div>
 
             {/* Mobile Navigation */}
@@ -275,57 +208,25 @@ export default function Header() {
                                 Home
                             </Link>
 
-                            {/* Mobile Features */}
-                            <button
-                                type="button"
-                                onClick={() => setProductsOpen(!productsOpen)}
-                                className="flex w-full items-center justify-between rounded-xl px-4 py-3 text-left text-sm font-bold text-slate-800 hover:bg-slate-50"
+
+
+
+                            <Link
+                                href="/services"
+                                onClick={closeMobileMenu}
+                                className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 hover:bg-slate-50"
                             >
-                                <span>Features</span>
 
-                                <ChevronDown
-                                    className={`h-4 w-4 transition-transform ${productsOpen ? "rotate-180" : ""
-                                        }`}
-                                />
-                            </button>
+                                Services
+                            </Link>
 
-                            {productsOpen && (
-                                <div className="ml-3 space-y-1 border-l border-slate-200 pl-3">
-                                    <Link
-                                        href="/services"
-                                        onClick={closeMobileMenu}
-                                        className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50"
-                                    >
-                                        <Sparkles className="h-4 w-4 text-indigo-600" />
-                                        Digital Shop
-                                    </Link>
-
-                                    <Link
-                                        href="/dashboard/products"
-                                        onClick={closeMobileMenu}
-                                        className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50"
-                                    >
-                                        <LayoutDashboard className="h-4 w-4 text-blue-600" />
-                                        Product Showcase
-                                    </Link>
-
-                                    <Link
-                                        href="/pricing"
-                                        onClick={closeMobileMenu}
-                                        className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50"
-                                    >
-                                        <CreditCard className="h-4 w-4 text-emerald-600" />
-                                        Plans & Pricing
-                                    </Link>
-                                </div>
-                            )}
 
                             <Link
                                 href="/pricing"
                                 onClick={closeMobileMenu}
                                 className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 hover:bg-slate-50"
                             >
-                                <CreditCard className="h-4 w-4 text-slate-500" />
+
                                 Pricing
                             </Link>
 
@@ -334,7 +235,7 @@ export default function Header() {
                                 onClick={closeMobileMenu}
                                 className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 hover:bg-slate-50"
                             >
-                                <Info className="h-4 w-4 text-slate-500" />
+
                                 About
                             </Link>
 
@@ -343,7 +244,7 @@ export default function Header() {
                                 onClick={closeMobileMenu}
                                 className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 hover:bg-slate-50"
                             >
-                                <Mail className="h-4 w-4 text-slate-500" />
+
                                 Contact
                             </Link>
                         </nav>
@@ -385,7 +286,7 @@ export default function Header() {
                                 <Link
                                     href="/login"
                                     onClick={closeMobileMenu}
-                                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-950 px-4 py-3 text-sm font-bold text-white transition hover:bg-indigo-600"
+                                    className="flex w-full max-w-xs mx-auto items-center justify-center gap-2 rounded-xl bg-slate-950 px-4 py-3 text-sm font-bold text-white transition hover:bg-indigo-600"
                                 >
                                     Login
                                 </Link>

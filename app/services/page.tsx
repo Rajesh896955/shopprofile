@@ -116,6 +116,33 @@ const steps = [
     },
 ];
 
+const previewProducts = [
+    {
+        name: "Wireless Headphones",
+        price: "₹2,499",
+        image:
+            "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=80",
+    },
+    {
+        name: "Smart Watch",
+        price: "₹3,999",
+        image:
+            "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&q=80",
+    },
+    {
+        name: "Classic Sneakers",
+        price: "₹1,999",
+        image:
+            "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80",
+    },
+    {
+        name: "Designer Sunglasses",
+        price: "₹1,299",
+        image:
+            "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=400&q=80",
+    },
+];
+
 export default function ServicesPage() {
     return (
         <main className="min-h-screen bg-white text-slate-900">
@@ -123,7 +150,7 @@ export default function ServicesPage() {
             <section className="relative overflow-hidden bg-slate-950">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.28),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(14,165,233,0.16),transparent_35%)]" />
 
-                <div className="relative mx-auto max-w-7xl px-5 py-20 sm:px-6 lg:px-8 lg:py-28">
+                <div className="relative mx-auto max-w-7xl px-5 py-6 sm:px-6 lg:px-8 lg:py-10">
                     <div className="mx-auto max-w-3xl text-center">
                         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200">
                             <Zap className="h-4 w-4 text-indigo-400" />
@@ -143,28 +170,12 @@ export default function ServicesPage() {
                             their business everywhere.
                         </p>
 
-                        <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-                            <Link
-                                href="/signup"
-                                className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 font-semibold text-slate-950 transition hover:bg-slate-100"
-                            >
-                                Create Your Profile
-                                <ArrowRight className="h-4 w-4" />
-                            </Link>
-
-                            <Link
-                                href="/pricing"
-                                className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/5 px-6 py-3.5 font-semibold text-white transition hover:bg-white/10"
-                            >
-                                View Pricing
-                            </Link>
-                        </div>
                     </div>
                 </div>
             </section>
 
             {/* Services */}
-            <section className="mx-auto max-w-7xl px-5 py-20 sm:px-6 lg:px-8 lg:py-24">
+            <section className="mx-auto max-w-7xl px-5 py-6 sm:px-6 lg:px-8 lg:py-10">
                 <div className="mx-auto max-w-2xl text-center">
                     <p className="text-sm font-bold uppercase tracking-wider text-indigo-600">
                         Our services
@@ -261,22 +272,25 @@ export default function ServicesPage() {
                                         </div>
 
                                         <div className="grid grid-cols-2 gap-3">
-                                            {[
-                                                "Premium Product",
-                                                "Daily Essentials",
-                                                "New Collection",
-                                                "Best Seller",
-                                            ].map((product) => (
+                                            {previewProducts.map((product) => (
                                                 <div
-                                                    key={product}
-                                                    className="rounded-xl border border-slate-200 p-3"
+                                                    key={product.name}
+                                                    className="group rounded-xl border border-slate-200 p-2.5 transition hover:border-indigo-200 hover:shadow-sm"
                                                 >
-                                                    <div className="flex aspect-square items-center justify-center rounded-lg bg-slate-100">
-                                                        <Package className="h-8 w-8 text-slate-400" />
+                                                    <div className="relative aspect-square overflow-hidden rounded-lg bg-slate-100">
+                                                        <img
+                                                            src={product.image}
+                                                            alt={product.name}
+                                                            className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                                                            loading="lazy"
+                                                        />
                                                     </div>
 
-                                                    <p className="mt-3 truncate text-xs font-semibold text-slate-800">
-                                                        {product}
+                                                    <p className="mt-2 truncate text-xs font-semibold text-slate-800">
+                                                        {product.name}
+                                                    </p>
+                                                    <p className="text-[11px] font-bold text-indigo-600">
+                                                        {product.price}
                                                     </p>
                                                 </div>
                                             ))}
@@ -367,7 +381,7 @@ export default function ServicesPage() {
             </section>
 
             {/* How It Works */}
-            <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
+            <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
                 <div className="mx-auto max-w-2xl text-center">
                     <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-indigo-600">
                         How it works
@@ -419,67 +433,24 @@ export default function ServicesPage() {
                                 can scan it and instantly access your digital profile.
                             </p>
 
-                            <Link
-                                href="/signup"
-                                className="mt-7 inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3.5 font-semibold text-slate-950 transition hover:bg-slate-100"
-                            >
-                                Create QR Profile
-                                <ArrowRight className="h-4 w-4" />
-                            </Link>
+
                         </div>
 
-                        <div className="flex justify-center">
-                            <div className="flex h-40 w-40 items-center justify-center rounded-2xl bg-white p-5 shadow-xl">
-                                <div className="grid grid-cols-5 gap-1">
-                                    {Array.from({ length: 25 }).map((_, index) => (
-                                        <div
-                                            key={index}
-                                            className={`h-4 w-4 rounded-[2px] ${[
-                                                0, 1, 2, 4, 5, 7, 9, 10, 12, 14, 15, 16, 18, 20,
-                                                22, 23, 24,
-                                            ].includes(index)
-                                                ? "bg-slate-950"
-                                                : "bg-transparent"
-                                                }`}
-                                        />
-                                    ))}
-                                </div>
+                        <div className="flex justify-center lg:justify-end">
+                            <div className="relative max-w-xs sm:max-w-sm">
+                                <div className="absolute -inset-6 rounded-full bg-indigo-500/20 blur-2xl pointer-events-none" />
+                                <img
+                                    src="/images/image2.png"
+                                    alt="ShopProfile QR Code"
+                                    className="relative w-full rounded-2xl shadow-2xl object-contain"
+                                />
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* CTA */}
-            <section className="border-t border-slate-200 bg-slate-50">
-                <div className="mx-auto max-w-4xl px-5 py-20 text-center sm:px-6 lg:py-24">
-                    <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                        Start building your digital shop today.
-                    </h2>
 
-                    <p className="mx-auto mt-4 max-w-2xl leading-7 text-slate-600">
-                        Create your ShopProfile, add your products and start sharing your
-                        business with customers.
-                    </p>
-
-                    <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-                        <Link
-                            href="/signup"
-                            className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-950 px-7 py-3.5 font-semibold text-white transition hover:bg-slate-800"
-                        >
-                            Get Started
-                            <ArrowRight className="h-4 w-4" />
-                        </Link>
-
-                        <Link
-                            href="/contact"
-                            className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-7 py-3.5 font-semibold text-slate-900 transition hover:bg-slate-100"
-                        >
-                            Contact Us
-                        </Link>
-                    </div>
-                </div>
-            </section>
         </main>
     );
 }

@@ -43,24 +43,7 @@ export default function HeroSection() {
                             you from one simple link or QR code.
                         </p>
 
-                        {/* CTA Buttons */}
-                        <div className="mt-8 flex flex-col gap-3.5 sm:flex-row sm:items-center">
-                            <Link
-                                href="/signup"
-                                className="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-4 text-sm font-bold text-indigo-600 shadow-[0_0_30px_rgba(255,255,255,0.35)] transition duration-200 hover:bg-slate-50 hover:shadow-[0_0_40px_rgba(99,102,241,0.6)] hover:scale-[1.02]"
-                            >
-                                <span>Create Your Free Profile</span>
-                                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 text-indigo-600" />
-                            </Link>
 
-                            <Link
-                                href="/services"
-                                className="inline-flex items-center justify-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-6 py-4 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/15 hover:border-white/40"
-                            >
-                                <span>Explore Features</span>
-                                <ChevronRight className="h-4 w-4 text-slate-300" />
-                            </Link>
-                        </div>
 
                         {/* Trust Badges */}
                         <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3">

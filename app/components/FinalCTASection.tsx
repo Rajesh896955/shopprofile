@@ -30,25 +30,6 @@ export default function FinalCTASection() {
                             simple place to discover your business.
                         </p>
 
-                        <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-
-                            <Link
-                                href="/signup"
-                                className="group inline-flex items-center justify-center gap-2 rounded-xl bg-white px-7 py-3.5 text-sm font-semibold text-indigo-700 shadow-lg transition hover:bg-slate-50"
-                            >
-                                Get Started Free
-
-                                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                            </Link>
-
-                            <Link
-                                href="/pricing"
-                                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/20"
-                            >
-                                View Pricing
-                            </Link>
-
-                        </div>
                     </div>
                 </div>
             </div>
