@@ -143,9 +143,9 @@ export default function SignupPage() {
     };
 
     return (
-        <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 px-4 py-8">
-            <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-6xl items-center justify-center">
-                <div className="grid w-full overflow-hidden rounded-3xl bg-white shadow-2xl lg:grid-cols-2">
+        <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 px-3 py-4 sm:px-4 sm:py-8">
+            <div className="mx-auto flex min-h-[calc(100vh-2rem)] sm:min-h-[calc(100vh-4rem)] max-w-6xl items-center justify-center">
+                <div className="grid w-full overflow-hidden rounded-2xl sm:rounded-3xl bg-white shadow-xl sm:shadow-2xl lg:grid-cols-2">
 
                     {/* Branding */}
                     <div className="relative hidden min-h-[700px] overflow-hidden bg-slate-900 p-12 text-white lg:flex lg:flex-col lg:justify-between">
@@ -190,50 +190,36 @@ export default function SignupPage() {
                             </div>
                         </div>
 
-                        <div className="relative z-10 text-sm text-slate-400">
-                            © {new Date().getFullYear()} ShopProfile
-                        </div>
                     </div>
 
                     {/* Signup */}
-                    <div className="flex items-center justify-center p-6 sm:p-10 lg:p-14">
+                    <div className="flex items-center justify-center p-4 sm:p-8 lg:p-14">
                         <div className="w-full max-w-md">
 
-                            <div className="mb-8 lg:hidden">
-                                <Link
-                                    href="/"
-                                    className="flex items-center gap-3 text-2xl font-bold text-slate-900"
-                                >
-                                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white">
-                                        S
-                                    </span>
-                                    ShopProfile
-                                </Link>
-                            </div>
 
-                            <div className="mb-8">
-                                <h2 className="text-3xl font-bold tracking-tight text-slate-900">
+                            <div className="mb-4 sm:mb-6">
+                                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
                                     Create your account
                                 </h2>
 
-                                <p className="mt-2 text-slate-500">
+                                <p className="mt-1 text-xs sm:text-sm text-slate-500">
                                     Start creating your digital shop profile.
                                 </p>
                             </div>
 
                             {error && (
-                                <div className="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+                                <div className="mb-3.5 sm:mb-5 rounded-xl border border-red-200 bg-red-50 px-3.5 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm text-red-600">
                                     {error}
                                 </div>
                             )}
 
                             {/* Email Signup Form */}
-                            <form onSubmit={handleSignup} className="space-y-4">
+                            <form onSubmit={handleSignup} className="space-y-3 sm:space-y-4">
 
                                 <div>
                                     <label
                                         htmlFor="name"
-                                        className="mb-2 block text-sm font-semibold text-slate-700"
+                                        className="mb-1 sm:mb-1.5 block text-xs sm:text-sm font-semibold text-slate-700"
                                     >
                                         Full name
                                     </label>
@@ -245,14 +231,14 @@ export default function SignupPage() {
                                         placeholder="Your name"
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
-                                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:bg-white focus:ring-4 focus:ring-slate-900/5"
+                                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 sm:px-4 sm:py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:bg-white focus:ring-4 focus:ring-slate-900/5"
                                     />
                                 </div>
 
                                 <div>
                                     <label
                                         htmlFor="email"
-                                        className="mb-2 block text-sm font-semibold text-slate-700"
+                                        className="mb-1 sm:mb-1.5 block text-xs sm:text-sm font-semibold text-slate-700"
                                     >
                                         Email address
                                     </label>
@@ -264,14 +250,14 @@ export default function SignupPage() {
                                         placeholder="you@example.com"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:bg-white focus:ring-4 focus:ring-slate-900/5"
+                                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 sm:px-4 sm:py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:bg-white focus:ring-4 focus:ring-slate-900/5"
                                     />
                                 </div>
 
                                 <div>
                                     <label
                                         htmlFor="password"
-                                        className="mb-2 block text-sm font-semibold text-slate-700"
+                                        className="mb-1 sm:mb-1.5 block text-xs sm:text-sm font-semibold text-slate-700"
                                     >
                                         Password
                                     </label>
@@ -284,19 +270,19 @@ export default function SignupPage() {
                                             placeholder="Minimum 6 characters"
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
-                                            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 pr-12 text-sm outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:bg-white focus:ring-4 focus:ring-slate-900/5"
+                                            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 sm:px-4 sm:py-3 pr-11 text-sm outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:bg-white focus:ring-4 focus:ring-slate-900/5"
                                         />
 
                                         <button
                                             type="button"
                                             onClick={() => setShowPassword((value) => !value)}
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-slate-500 hover:bg-slate-200/60 hover:text-slate-900 transition-colors"
+                                            className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-slate-500 hover:bg-slate-200/60 hover:text-slate-900 transition-colors"
                                             aria-label={showPassword ? "Hide password" : "Show password"}
                                         >
                                             {showPassword ? (
-                                                <EyeOff className="h-5 w-5" />
+                                                <EyeOff className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
                                             ) : (
-                                                <Eye className="h-5 w-5" />
+                                                <Eye className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
                                             )}
                                         </button>
                                     </div>
@@ -305,7 +291,7 @@ export default function SignupPage() {
                                 <div>
                                     <label
                                         htmlFor="confirmPassword"
-                                        className="mb-2 block text-sm font-semibold text-slate-700"
+                                        className="mb-1 sm:mb-1.5 block text-xs sm:text-sm font-semibold text-slate-700"
                                     >
                                         Confirm password
                                     </label>
@@ -318,7 +304,7 @@ export default function SignupPage() {
                                             placeholder="Repeat your password"
                                             value={confirmPassword}
                                             onChange={(e) => setConfirmPassword(e.target.value)}
-                                            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 pr-12 text-sm outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:bg-white focus:ring-4 focus:ring-slate-900/5"
+                                            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 sm:px-4 sm:py-3 pr-11 text-sm outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:bg-white focus:ring-4 focus:ring-slate-900/5"
                                         />
 
                                         <button
@@ -326,19 +312,19 @@ export default function SignupPage() {
                                             onClick={() =>
                                                 setShowConfirmPassword((value) => !value)
                                             }
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-slate-500 hover:bg-slate-200/60 hover:text-slate-900 transition-colors"
+                                            className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-slate-500 hover:bg-slate-200/60 hover:text-slate-900 transition-colors"
                                             aria-label={showConfirmPassword ? "Hide password" : "Show password"}
                                         >
                                             {showConfirmPassword ? (
-                                                <EyeOff className="h-5 w-5" />
+                                                <EyeOff className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
                                             ) : (
-                                                <Eye className="h-5 w-5" />
+                                                <Eye className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
                                             )}
                                         </button>
                                     </div>
                                 </div>
 
-                                <p className="text-xs leading-5 text-slate-500">
+                                <p className="text-[11px] sm:text-xs leading-normal sm:leading-5 text-slate-500 pt-0.5">
                                     By creating an account, you agree to our{" "}
                                     <Link
                                         href="/terms"
@@ -359,7 +345,7 @@ export default function SignupPage() {
                                 <button
                                     type="submit"
                                     disabled={loading || googleLoading}
-                                    className="flex w-full items-center justify-center rounded-xl bg-slate-900 px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-slate-900/20 transition hover:-translate-y-0.5 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+                                    className="flex w-full items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 sm:py-3 text-sm font-bold text-white shadow-lg shadow-slate-900/20 transition hover:-translate-y-0.5 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
                                 >
                                     {loading ? (
                                         <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
@@ -370,9 +356,9 @@ export default function SignupPage() {
                             </form>
 
                             {/* Divider */}
-                            <div className="my-7 flex items-center gap-4">
+                            <div className="my-3.5 sm:my-6 flex items-center gap-3 sm:gap-4">
                                 <div className="h-px flex-1 bg-slate-200" />
-                                <span className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                                <span className="text-[11px] sm:text-xs font-medium uppercase tracking-wider text-slate-400">
                                     or sign up with
                                 </span>
                                 <div className="h-px flex-1 bg-slate-200" />
@@ -383,12 +369,12 @@ export default function SignupPage() {
                                 type="button"
                                 onClick={handleGoogleSignup}
                                 disabled={googleLoading || loading}
-                                className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+                                className="flex w-full items-center justify-center gap-2.5 sm:gap-3 rounded-xl border border-slate-200 bg-white px-4 py-2.5 sm:py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
                             >
                                 {googleLoading ? (
                                     <span className="h-5 w-5 animate-spin rounded-full border-2 border-slate-300 border-t-slate-800" />
                                 ) : (
-                                    <svg width="20" height="20" viewBox="0 0 24 24">
+                                    <svg width="18" height="18" className="sm:w-5 sm:h-5 shrink-0" viewBox="0 0 24 24">
                                         <path
                                             fill="#4285F4"
                                             d="M23.49 12.27c0-.79-.07-1.55-.2-2.27H12v4.3h6.45a5.51 5.51 0 0 1-2.4 3.62v3.01h3.88c2.27-2.09 3.56-5.17 3.56-8.66Z"
@@ -411,7 +397,7 @@ export default function SignupPage() {
                                 {googleLoading ? "Connecting..." : "Continue with Google"}
                             </button>
 
-                            <p className="mt-8 text-center text-sm text-slate-500">
+                            <p className="mt-4 sm:mt-6 text-center text-xs sm:text-sm text-slate-500">
                                 Already have an account?{" "}
                                 <Link
                                     href="/login"

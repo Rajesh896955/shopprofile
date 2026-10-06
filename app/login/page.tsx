@@ -122,7 +122,7 @@ export default function LoginPage() {
     };
 
     return (
-        <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 px-4 py-8">
+        <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 px-4 py-5">
             <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-6xl items-center justify-center">
                 <div className="grid w-full overflow-hidden rounded-3xl bg-white shadow-2xl lg:grid-cols-2">
 
@@ -153,26 +153,12 @@ export default function LoginPage() {
                             </p>
                         </div>
 
-                        <div className="relative z-10 text-sm text-slate-400">
-                            © {new Date().getFullYear()} ShopProfile
-                        </div>
                     </div>
 
                     {/* Login Form */}
                     <div className="flex items-center justify-center p-6 sm:p-10 lg:p-14">
                         <div className="w-full max-w-md">
 
-                            <div className="mb-8 lg:hidden">
-                                <Link
-                                    href="/"
-                                    className="flex items-center gap-3 text-2xl font-bold text-slate-900"
-                                >
-                                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white">
-                                        S
-                                    </span>
-                                    ShopProfile
-                                </Link>
-                            </div>
 
                             <div className="mb-8">
                                 <h2 className="text-3xl font-bold tracking-tight text-slate-900">
