@@ -90,7 +90,7 @@ const plans = [
         period: "for 6 months",
         duration: "6 Months",
         effectiveMonthly: "₹92.5/mo",
-        productLimit: "200 Products",
+        productLimit: "300 Products",
         icon: Building2,
         popular: true,
         bestValue: false,
@@ -98,7 +98,7 @@ const plans = [
         href: "/signup?plan=6months",
         features: [
             "6 Months active access",
-            "Up to 200 products",
+            "Up to 300 products",
             "Everything in 1 Month plan",
             "Priority QR scanner access",
             "Save ₹39 vs monthly",
@@ -146,7 +146,7 @@ const comparison = [
         feature: "Product listings limit",
         trial: "50 Products",
         monthly: "100 Products",
-        semiAnnual: "200 Products",
+        semiAnnual: "300 Products",
         annual: "Unlimited",
     },
     {
@@ -237,7 +237,7 @@ const faq = [
     {
         question: "What are the product limits for each plan?",
         answer:
-            "The 14-Day Free Trial includes up to 50 products, the 1 Month plan (₹99) includes up to 100 products, the 6 Months plan (₹555) includes up to 200 products, and the 1 Year plan (₹999) includes Unlimited products.",
+            "The 14-Day Free Trial includes up to 50 products, the 1 Month plan (₹99) includes up to 100 products, the 6 Months plan (₹555) includes up to 300 products, and the 1 Year plan (₹999) includes Unlimited products.",
     },
     {
         question: "Can I upgrade from 1 Month to 6 Months or 1 Year later?",
@@ -352,7 +352,7 @@ export default function PricingPage() {
     return (
         <main className="min-h-screen bg-slate-50">
             {/* Hero */}
-            <section className="relative overflow-hidden bg-slate-950 px-6 pb-24 pt-20 text-white">
+            <section className="relative overflow-hidden bg-slate-950 px-6 pb-12 pt-6 text-white">
                 <div className="absolute -left-32 top-10 h-72 w-72 rounded-full bg-indigo-500/20 blur-3xl pointer-events-none" />
                 <div className="absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-cyan-500/20 blur-3xl pointer-events-none" />
 
@@ -397,7 +397,7 @@ export default function PricingPage() {
                             className="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full border border-white/10 cursor-pointer transition-all"
                         >
                             <Building2 className="w-3.5 h-3.5 text-indigo-400" />
-                            6 Months ₹555 (200 Products)
+                            6 Months ₹555 (300 Products)
                         </button>
                         <button
                             type="button"
@@ -412,7 +412,7 @@ export default function PricingPage() {
             </section>
 
             {/* Pricing Cards (4-Column Grid) */}
-            <section className="-mt-12 px-4 sm:px-6 pb-20 relative z-10">
+            <section className="-mt-12 px-4 sm:px-6 pb-4 sm:pb-8 relative z-10">
                 <div className="mx-auto grid max-w-7xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
                     {plans.map((plan) => {
                         const Icon = plan.icon;
@@ -555,7 +555,7 @@ export default function PricingPage() {
             </section>
 
             {/* Comparison Table */}
-            <section className="bg-white px-4 sm:px-6 py-16 sm:py-20 border-t border-slate-200">
+            <section className="bg-white px-4 sm:px-6 py-5 sm:py-8 border-t border-slate-200">
                 <div className="mx-auto max-w-6xl">
                     <div className="text-center">
                         <p className="text-xs font-black uppercase tracking-wider text-indigo-600">
@@ -641,7 +641,7 @@ export default function PricingPage() {
             </section>
 
             {/* FAQ */}
-            <section className="bg-slate-50 px-4 sm:px-6 py-16 sm:py-20">
+            <section className="bg-slate-50 px-4 sm:px-6 py-6 sm:py-8">
                 <div className="mx-auto max-w-4xl">
                     <div className="text-center">
                         <HelpCircle className="mx-auto h-8 w-8 text-indigo-600" />
@@ -679,7 +679,7 @@ export default function PricingPage() {
             </section>
 
             {/* Bottom CTA */}
-            <section className="bg-slate-950 px-6 py-16 sm:py-20 text-white">
+            <section className="bg-slate-950 px-6 py-6 sm:py-8 text-white">
                 <div className="mx-auto max-w-4xl text-center">
                     <h2 className="text-2xl sm:text-4xl font-black tracking-tight">
                         Ready to launch your digital store?

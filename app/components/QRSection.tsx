@@ -1,6 +1,4 @@
-import Link from "next/link";
 import {
-    ArrowRight,
     Check,
     QrCode,
 } from "lucide-react";
@@ -45,32 +43,16 @@ export default function QRSection() {
 
                         </div>
 
-                        {/* QR Visual */}
+                        {/* QR Image Visual */}
                         <div className="flex justify-center lg:justify-end">
-                            <div className="relative">
+                            <div className="relative max-w-sm sm:max-w-md">
+                                <div className="absolute -inset-8 rounded-full bg-indigo-500/20 blur-3xl pointer-events-none" />
 
-                                <div className="absolute -inset-8 rounded-full bg-indigo-500/20 blur-3xl" />
-
-                                <div className="relative rounded-[2rem] bg-white p-7 shadow-2xl">
-
-                                    <div className="flex h-64 w-64 items-center justify-center rounded-xl bg-slate-50">
-                                        <QrCode
-                                            className="h-52 w-52 text-slate-950"
-                                            strokeWidth={1.3}
-                                        />
-                                    </div>
-
-                                    <div className="mt-5 text-center">
-                                        <p className="font-bold text-slate-900">
-                                            Scan to visit
-                                        </p>
-
-                                        <p className="mt-1 text-xs text-slate-500">
-                                            shopprofile.in/shop/yourbusiness
-                                        </p>
-                                    </div>
-
-                                </div>
+                                <img
+                                    src="/images/image2.png"
+                                    alt="Scan to visit"
+                                    className="relative w-full rounded-2xl shadow-2xl object-contain"
+                                />
                             </div>
                         </div>
 

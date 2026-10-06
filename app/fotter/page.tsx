@@ -51,11 +51,11 @@ export default function Footer() {
 
                         {/* Email */}
                         <a
-                            href="mailto:support@shopprofile.in"
+                            href="mailto:shopprofile8969@gmail.com"
                             className="mt-5 inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-white"
                         >
                             <Mail className="h-4 w-4" />
-                            support@shopprofile.in
+                            shopprofile8969@gmail.com
                         </a>
 
                         {/* Social Links */}
