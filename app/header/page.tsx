@@ -54,33 +54,51 @@ export default function Header() {
     return (
         <header className="sticky top-0 z-50 w-full border-b border-slate-200/80 bg-white/95 backdrop-blur-xl">
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-                {/* Logo */}
-                <Link
-                    href="/"
-                    onClick={closeMobileMenu}
-                    className="group flex items-center gap-2.5"
-                >
-                    <div className="relative h-10 w-10 overflow-hidden rounded-xl shadow-sm transition-transform duration-200 group-hover:scale-105">
-                        <Image
-                            src="/favicon.ico"
-                            alt="ShopProfile"
-                            fill
-                            priority
-                            sizes="40px"
-                            className="object-cover"
-                        />
-                    </div>
+                {/* Left Side: Mobile Menu Button (Sabse Left Side) + Logo */}
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                    {/* Mobile Menu Button - Sabse Left Side */}
+                    <button
+                        type="button"
+                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-800 transition hover:bg-slate-50 lg:hidden cursor-pointer shrink-0"
+                        aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                        aria-expanded={mobileMenuOpen}
+                    >
+                        {mobileMenuOpen ? (
+                            <X className="h-5 w-5" />
+                        ) : (
+                            <Menu className="h-5 w-5" />
+                        )}
+                    </button>
 
-                    <div className="leading-none">
-                        <span className="block text-xl font-black tracking-tight text-slate-950">
-                            Shop<span className="text-indigo-600">Profile</span>
-                        </span>
+                    {/* Logo */}
+                    <Link
+                        href="/"
+                        onClick={closeMobileMenu}
+                        className="group flex items-center gap-2 sm:gap-2.5"
+                    >
+                        <div className="relative h-9 w-9 sm:h-10 sm:w-10 overflow-hidden rounded-xl shadow-sm transition-transform duration-200 group-hover:scale-105">
+                            <Image
+                                src="/favicon.ico"
+                                alt="ShopProfile"
+                                fill
+                                priority
+                                sizes="40px"
+                                className="object-cover"
+                            />
+                        </div>
 
-                        <span className="mt-1 hidden text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400 sm:block">
-                            Your Digital Shop
-                        </span>
-                    </div>
-                </Link>
+                        <div className="leading-none">
+                            <span className="block text-lg sm:text-xl font-black tracking-tight text-slate-950">
+                                Shop<span className="text-indigo-600">Profile</span>
+                            </span>
+
+                            <span className="mt-1 hidden text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400 sm:block">
+                                Your Digital Shop
+                            </span>
+                        </div>
+                    </Link>
+                </div>
 
                 {/* Desktop Navigation */}
                 <nav className="hidden items-center gap-1 lg:flex">
@@ -172,26 +190,14 @@ export default function Header() {
                     ) : (
                         <Link
                             href="/login"
-                            className="inline-flex w-20 sm:w-24 h-9 sm:h-10 items-center justify-center rounded-xl bg-slate-950 text-xs sm:text-sm font-bold text-white shadow-sm transition hover:bg-indigo-600 active:scale-95 shrink-0"
+                            className="inline-flex w-18 sm:w-20 h-9 sm:h-10 items-center justify-center rounded-xl bg-slate-950 text-xs sm:text-sm font-bold text-white shadow-sm transition hover:bg-indigo-600 active:scale-95 shrink-0"
                         >
                             Login
                         </Link>
                     )}
 
                     {/* Mobile Menu Button */}
-                    <button
-                        type="button"
-                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-800 transition hover:bg-slate-50 lg:hidden cursor-pointer shrink-0"
-                        aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-                        aria-expanded={mobileMenuOpen}
-                    >
-                        {mobileMenuOpen ? (
-                            <X className="h-5 w-5" />
-                        ) : (
-                            <Menu className="h-5 w-5" />
-                        )}
-                    </button>
+
                 </div>
             </div>
 
@@ -207,9 +213,6 @@ export default function Header() {
                             >
                                 Home
                             </Link>
-
-
-
 
                             <Link
                                 href="/services"
@@ -249,9 +252,9 @@ export default function Header() {
                             </Link>
                         </nav>
 
-                        {/* Mobile Actions */}
-                        <div className="mt-4 border-t border-slate-100 pt-4">
-                            {user ? (
+                        {/* Mobile Actions - only shown when logged in, no login button below */}
+                        {user && (
+                            <div className="mt-4 border-t border-slate-100 pt-4">
                                 <div className="space-y-2">
                                     <div className="flex items-center gap-3 px-3 py-2 rounded-2xl bg-slate-50 border border-slate-100">
                                         <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-600 to-blue-500 text-white font-black text-base flex items-center justify-center shadow-xs shrink-0">
@@ -282,16 +285,8 @@ export default function Header() {
                                         Sign Out
                                     </button>
                                 </div>
-                            ) : (
-                                <Link
-                                    href="/login"
-                                    onClick={closeMobileMenu}
-                                    className="flex w-full max-w-xs mx-auto items-center justify-center gap-2 rounded-xl bg-slate-950 px-4 py-3 text-sm font-bold text-white transition hover:bg-indigo-600"
-                                >
-                                    Login
-                                </Link>
-                            )}
-                        </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
