@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import {
     ArrowRight,
@@ -10,12 +13,9 @@ import {
     Send,
     ShieldCheck,
 } from "lucide-react";
-
-export const metadata = {
-    title: "Contact Us",
-    description:
-        "Contact ShopProfile for support, business enquiries, questions and help with your digital shop profile.",
-};
+import { toast } from "sonner";
+import { db } from "@/lib/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 const contactOptions = [
     {
@@ -54,6 +54,104 @@ const reasons = [
 ];
 
 export default function ContactPage() {
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        business: "",
+        subject: "",
+        message: "",
+    });
+
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState("");
+
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    ) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setError("");
+        setSuccess(false);
+
+        if (!formData.name.trim()) {
+            setError("Please enter your name.");
+            return;
+        }
+
+        if (!formData.email.trim()) {
+            setError("Please enter your email address.");
+            return;
+        }
+
+        if (!formData.subject) {
+            setError("Please select an enquiry type.");
+            return;
+        }
+
+        if (!formData.message.trim()) {
+            setError("Please enter your message.");
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            // 1. Try direct Firestore insert into "shop-contact" collection
+            try {
+                await addDoc(collection(db, "shop-contact"), {
+                    name: formData.name.trim(),
+                    email: formData.email.trim().toLowerCase(),
+                    business: formData.business.trim() || null,
+                    subject: formData.subject,
+                    message: formData.message.trim(),
+                    status: "unread",
+                    createdAt: serverTimestamp(),
+                    updatedAt: serverTimestamp(),
+                });
+            } catch (firestoreError) {
+                console.warn(
+                    "Direct Firestore write failed, trying fallback API:",
+                    firestoreError
+                );
+                // 2. Fallback to /api/contact route
+                const res = await fetch("/api/contact", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(formData),
+                });
+                const resData = await res.json();
+                if (!res.ok || !resData.success) {
+                    throw new Error(resData.message || "Failed to submit enquiry.");
+                }
+            }
+
+            setSuccess(true);
+            setFormData({
+                name: "",
+                email: "",
+                business: "",
+                subject: "",
+                message: "",
+            });
+            toast.success("Your message has been sent successfully!");
+        } catch (err: unknown) {
+            console.error("Error submitting contact form:", err);
+            const msg =
+                err instanceof Error
+                    ? err.message
+                    : "Failed to send message. Please try again.";
+            setError(msg);
+            toast.error(msg);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <main className="min-h-screen bg-white text-slate-900">
             {/* Hero */}
@@ -202,20 +300,40 @@ export default function ContactPage() {
                                 </p>
                             </div>
 
-                            <form className="space-y-3.5 sm:space-y-5">
+                            {success && (
+                                <div className="mb-4 flex items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-3.5 text-xs sm:text-sm text-emerald-800">
+                                    <CheckCircle2 className="mt-0.5 h-4.5 w-4.5 shrink-0 text-emerald-600" />
+                                    <div>
+                                        <p className="font-semibold">Message sent successfully!</p>
+                                        <p className="mt-0.5 text-emerald-700">
+                                            Thank you for reaching out. Your request has been stored and we will contact you shortly.
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+
+                            {error && (
+                                <div className="mb-4 rounded-xl border border-red-200 bg-red-50 p-3.5 text-xs sm:text-sm text-red-600">
+                                    {error}
+                                </div>
+                            )}
+
+                            <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-5">
                                 {/* Name */}
                                 <div>
                                     <label
                                         htmlFor="name"
                                         className="mb-1 sm:mb-2 block text-xs sm:text-sm font-semibold text-slate-700"
                                     >
-                                        Full Name
+                                        Full Name *
                                     </label>
 
                                     <input
                                         id="name"
                                         name="name"
                                         type="text"
+                                        value={formData.name}
+                                        onChange={handleChange}
                                         placeholder="Enter your name"
                                         required
                                         className="w-full rounded-lg sm:rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 sm:px-4 sm:py-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10"
@@ -228,13 +346,15 @@ export default function ContactPage() {
                                         htmlFor="email"
                                         className="mb-1 sm:mb-2 block text-xs sm:text-sm font-semibold text-slate-700"
                                     >
-                                        Email Address
+                                        Email Address *
                                     </label>
 
                                     <input
                                         id="email"
                                         name="email"
                                         type="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
                                         placeholder="you@example.com"
                                         required
                                         className="w-full rounded-lg sm:rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 sm:px-4 sm:py-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10"
@@ -254,7 +374,9 @@ export default function ContactPage() {
                                         id="business"
                                         name="business"
                                         type="text"
-                                        placeholder="Enter your business name"
+                                        value={formData.business}
+                                        onChange={handleChange}
+                                        placeholder="Enter your business name (optional)"
                                         className="w-full rounded-lg sm:rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 sm:px-4 sm:py-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10"
                                     />
                                 </div>
@@ -265,13 +387,14 @@ export default function ContactPage() {
                                         htmlFor="subject"
                                         className="mb-1 sm:mb-2 block text-xs sm:text-sm font-semibold text-slate-700"
                                     >
-                                        Subject
+                                        Subject *
                                     </label>
 
                                     <select
                                         id="subject"
                                         name="subject"
-                                        defaultValue=""
+                                        value={formData.subject}
+                                        onChange={handleChange}
                                         required
                                         className="w-full rounded-lg sm:rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 sm:px-4 sm:py-3.5 text-sm text-slate-700 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10"
                                     >
@@ -294,13 +417,15 @@ export default function ContactPage() {
                                         htmlFor="message"
                                         className="mb-1 sm:mb-2 block text-xs sm:text-sm font-semibold text-slate-700"
                                     >
-                                        Message
+                                        Message *
                                     </label>
 
                                     <textarea
                                         id="message"
                                         name="message"
                                         rows={4}
+                                        value={formData.message}
+                                        onChange={handleChange}
                                         placeholder="Tell us how we can help..."
                                         required
                                         className="w-full resize-none rounded-lg sm:rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 sm:px-4 sm:py-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10"
@@ -310,10 +435,20 @@ export default function ContactPage() {
                                 {/* Submit */}
                                 <button
                                     type="submit"
-                                    className="inline-flex w-full items-center justify-center gap-2 rounded-lg sm:rounded-xl bg-slate-950 px-5 py-2.5 sm:py-3.5 text-sm font-semibold text-white transition hover:bg-slate-800"
+                                    disabled={loading}
+                                    className="inline-flex w-full items-center justify-center gap-2 rounded-lg sm:rounded-xl bg-slate-950 px-5 py-2.5 sm:py-3.5 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
                                 >
-                                    Send Message
-                                    <Send className="h-4 w-4" />
+                                    {loading ? (
+                                        <>
+                                            <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                                            Sending Message...
+                                        </>
+                                    ) : (
+                                        <>
+                                            Send Message
+                                            <Send className="h-4 w-4" />
+                                        </>
+                                    )}
                                 </button>
 
                                 <p className="flex items-center justify-center gap-1.5 sm:gap-2 text-center text-[11px] sm:text-xs text-slate-500 pt-1">

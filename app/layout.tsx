@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 import Header from "./header/page";
 import Footer from "./fotter/page";
@@ -42,6 +43,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
+        <Toaster position="top-right" richColors />
       </body>
     </html>
   );
