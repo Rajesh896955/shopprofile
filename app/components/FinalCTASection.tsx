@@ -6,7 +6,7 @@ import {
 
 export default function FinalCTASection() {
     return (
-        <section className="bg-white px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+        <section className="bg-white px-4 pt-4 pb-12 sm:px-6 sm:pt-8 sm:pb-20 lg:px-8 lg:pt-10 lg:pb-28">
             <div className="mx-auto max-w-5xl">
 
                 <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-indigo-600 via-blue-600 to-purple-700 px-6 py-16 text-center shadow-2xl sm:px-10">

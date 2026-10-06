@@ -5,7 +5,7 @@ import {
 
 export default function QRSection() {
     return (
-        <section className="px-4 pb-20 sm:px-6 lg:px-8 lg:pb-28">
+        <section className="px-4 pb-4 sm:px-6 sm:pb-8 lg:px-8 lg:pb-12">
             <div className="mx-auto max-w-7xl">
 
                 <div className="relative overflow-hidden rounded-[2rem] bg-slate-950 px-6 py-5 sm:px-10 lg:px-16 lg:py-6">
