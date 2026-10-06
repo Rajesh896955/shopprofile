@@ -367,32 +367,32 @@ export default function ServicesPage() {
             </section>
 
             {/* How It Works */}
-            <section className="mx-auto max-w-7xl px-5 py-20 sm:px-6 lg:px-8 lg:py-24">
+            <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
                 <div className="mx-auto max-w-2xl text-center">
-                    <p className="text-sm font-bold uppercase tracking-wider text-indigo-600">
+                    <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-indigo-600">
                         How it works
                     </p>
 
-                    <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                    <h2 className="mt-2 sm:mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-4xl">
                         Get your digital shop online in three steps
                     </h2>
                 </div>
 
-                <div className="mt-12 grid gap-6 md:grid-cols-3">
+                <div className="mt-6 sm:mt-12 grid gap-4 sm:gap-6 md:grid-cols-3">
                     {steps.map((step) => (
                         <div
                             key={step.number}
-                            className="relative rounded-2xl border border-slate-200 bg-white p-7"
+                            className="relative rounded-xl sm:rounded-2xl border border-slate-200 bg-white p-5 sm:p-7"
                         >
-                            <span className="text-5xl font-black text-indigo-100">
+                            <span className="text-4xl sm:text-5xl font-black text-indigo-100">
                                 {step.number}
                             </span>
 
-                            <h3 className="mt-4 text-xl font-bold text-slate-900">
+                            <h3 className="mt-2.5 sm:mt-4 text-lg sm:text-xl font-bold text-slate-900">
                                 {step.title}
                             </h3>
 
-                            <p className="mt-3 text-sm leading-6 text-slate-600">
+                            <p className="mt-2 sm:mt-3 text-xs sm:text-sm leading-5 sm:leading-6 text-slate-600">
                                 {step.description}
                             </p>
                         </div>
@@ -401,7 +401,7 @@ export default function ServicesPage() {
             </section>
 
             {/* QR Section */}
-            <section className="bg-slate-950 py-20 sm:py-24">
+            <section className="bg-slate-950 py-10 sm:py-20 lg:py-24">
                 <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-8">
                     <div className="grid items-center gap-10 rounded-3xl border border-white/10 bg-white/5 p-8 sm:p-12 lg:grid-cols-[1fr_auto]">
                         <div>

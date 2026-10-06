@@ -10,7 +10,7 @@ export default function QRSection() {
         <section className="px-4 pb-20 sm:px-6 lg:px-8 lg:pb-28">
             <div className="mx-auto max-w-7xl">
 
-                <div className="relative overflow-hidden rounded-[2rem] bg-slate-950 px-6 py-14 sm:px-10 lg:px-16 lg:py-20">
+                <div className="relative overflow-hidden rounded-[2rem] bg-slate-950 px-6 py-5 sm:px-10 lg:px-16 lg:py-6">
 
                     <div className="absolute -right-32 -top-32 h-80 w-80 rounded-full bg-indigo-600/20 blur-3xl" />
 
@@ -43,13 +43,6 @@ export default function QRSection() {
                                 <CheckItem text="No app installation required" />
                             </div>
 
-                            <Link
-                                href="/signup"
-                                className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-semibold text-slate-950 transition hover:bg-slate-100"
-                            >
-                                Create Your QR Profile
-                                <ArrowRight className="h-4 w-4" />
-                            </Link>
                         </div>
 
                         {/* QR Visual */}

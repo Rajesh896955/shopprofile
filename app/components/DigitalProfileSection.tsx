@@ -15,9 +15,6 @@ export default function DigitalProfileSection() {
 
                 {/* Content */}
                 <div>
-                    <span className="text-sm font-semibold uppercase tracking-[0.18em] text-indigo-600">
-                        Your digital storefront
-                    </span>
 
                     <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
                         One profile.
@@ -54,13 +51,6 @@ export default function DigitalProfileSection() {
                         />
                     </div>
 
-                    <Link
-                        href="/signup"
-                        className="group mt-9 inline-flex items-center gap-2 rounded-xl bg-slate-950 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-indigo-600"
-                    >
-                        Create Your Profile
-                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </Link>
                 </div>
 
             </div>
