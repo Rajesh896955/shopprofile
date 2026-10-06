@@ -24,24 +24,24 @@ const contactOptions = [
         title: "Email Support",
         description:
             "Send us your questions and our team will get back to you.",
-        value: "support@shopprofile.in",
-        href: "mailto:support@shopprofile.in",
+        value: "shopprofile8969@gmail.com",
+        href: "shopprofile8969@gmail.com",
     },
     {
         icon: MessageCircle,
         title: "General Enquiries",
         description:
             "Have a question about ShopProfile or how it works?",
-        value: "hello@shopprofile.in",
-        href: "mailto:hello@shopprofile.in",
+        value: "shopprofile8969@gmail.com",
+        href: "shopprofile8969@gmail.com",
     },
     {
         icon: Phone,
         title: "Business Support",
         description:
             "Contact us for business-related questions and assistance.",
-        value: "+91 00000 00000",
-        href: "tel:+910000000000",
+        value: "+91 89205 04484",
+        href: "tel:+91 8920504484",
     },
 ];
 
