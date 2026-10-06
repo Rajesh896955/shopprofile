@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import {
     Menu,
@@ -21,7 +22,16 @@ import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useAuth } from "@/hooks/use-auth";
 
+const navLinks = [
+    { name: "Home", href: "/" },
+    { name: "Services", href: "/services" },
+    { name: "Pricing", href: "/pricing" },
+    { name: "About", href: "/about" },
+    { name: "Contact", href: "/contact" },
+];
+
 export default function Header() {
+    const pathname = usePathname();
     const { user, loading } = useAuth();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [productsOpen, setProductsOpen] = useState(false);
@@ -31,6 +41,14 @@ export default function Header() {
     const closeMobileMenu = () => {
         setMobileMenuOpen(false);
         setProductsOpen(false);
+    };
+
+    const isCurrentPage = (href: string) => {
+        if (!pathname) return false;
+        if (href === "/") {
+            return pathname === "/";
+        }
+        return pathname === href || pathname.startsWith(`${href}/`);
     };
 
     // Close user dropdown if clicked outside
@@ -101,44 +119,23 @@ export default function Header() {
                 </div>
 
                 {/* Desktop Navigation */}
-                <nav className="hidden items-center gap-1 lg:flex">
-                    <Link
-                        href="/"
-                        className="rounded-lg px-3.5 py-2 text-sm font-bold text-slate-800 transition hover:bg-slate-50 hover:text-indigo-600"
-                    >
-                        Home
-                    </Link>
-
-                    <Link
-                        href="/services"
-                        onClick={closeMobileMenu}
-                        className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 hover:bg-slate-50"
-                    >
-
-                        Services
-                    </Link>
-
-
-                    <Link
-                        href="/pricing"
-                        className="rounded-lg px-3.5 py-2 text-sm font-bold text-slate-800 transition hover:bg-slate-50 hover:text-indigo-600"
-                    >
-                        Pricing
-                    </Link>
-
-                    <Link
-                        href="/about"
-                        className="rounded-lg px-3.5 py-2 text-sm font-bold text-slate-800 transition hover:bg-slate-50 hover:text-indigo-600"
-                    >
-                        About
-                    </Link>
-
-                    <Link
-                        href="/contact"
-                        className="rounded-lg px-3.5 py-2 text-sm font-bold text-slate-800 transition hover:bg-slate-50 hover:text-indigo-600"
-                    >
-                        Contact
-                    </Link>
+                <nav className="hidden items-center gap-1.5 lg:flex">
+                    {navLinks.map((link) => {
+                        const active = isCurrentPage(link.href);
+                        return (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className={`rounded-xl px-3.5 py-2 text-sm font-bold transition-all duration-150 ${
+                                    active
+                                        ? "bg-indigo-50 text-indigo-600 shadow-2xs font-black"
+                                        : "text-slate-700 hover:bg-slate-50 hover:text-indigo-600"
+                                }`}
+                            >
+                                {link.name}
+                            </Link>
+                        );
+                    })}
                 </nav>
 
                 {/* Header Actions */}
@@ -205,51 +202,27 @@ export default function Header() {
             {mobileMenuOpen && (
                 <div className="border-t border-slate-100 bg-white lg:hidden">
                     <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6">
-                        <nav className="space-y-1">
-                            <Link
-                                href="/"
-                                onClick={closeMobileMenu}
-                                className="block rounded-xl px-4 py-3 text-sm font-bold text-slate-800 hover:bg-slate-50"
-                            >
-                                Home
-                            </Link>
-
-                            <Link
-                                href="/services"
-                                onClick={closeMobileMenu}
-                                className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 hover:bg-slate-50"
-                            >
-
-                                Services
-                            </Link>
-
-
-                            <Link
-                                href="/pricing"
-                                onClick={closeMobileMenu}
-                                className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 hover:bg-slate-50"
-                            >
-
-                                Pricing
-                            </Link>
-
-                            <Link
-                                href="/about"
-                                onClick={closeMobileMenu}
-                                className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 hover:bg-slate-50"
-                            >
-
-                                About
-                            </Link>
-
-                            <Link
-                                href="/contact"
-                                onClick={closeMobileMenu}
-                                className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 hover:bg-slate-50"
-                            >
-
-                                Contact
-                            </Link>
+                        <nav className="space-y-1.5">
+                            {navLinks.map((link) => {
+                                const active = isCurrentPage(link.href);
+                                return (
+                                    <Link
+                                        key={link.href}
+                                        href={link.href}
+                                        onClick={closeMobileMenu}
+                                        className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm font-bold transition-all duration-150 ${
+                                            active
+                                                ? "bg-indigo-50 text-indigo-600 font-black shadow-2xs"
+                                                : "text-slate-800 hover:bg-slate-50"
+                                        }`}
+                                    >
+                                        <span>{link.name}</span>
+                                        {active && (
+                                            <span className="h-2 w-2 rounded-full bg-indigo-600 shadow-xs" />
+                                        )}
+                                    </Link>
+                                );
+                            })}
                         </nav>
 
                         {/* Mobile Actions - only shown when logged in, no login button below */}
