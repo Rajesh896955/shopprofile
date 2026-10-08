@@ -56,7 +56,7 @@ export default function LoginPage() {
                 console.warn("Backend login sync notice:", apiData.message);
             }
 
-            router.push("/dashboard");
+            router.push("/");
             router.refresh();
         } catch (err: unknown) {
             const firebaseErr = err as { code?: string; message?: string };
@@ -107,7 +107,7 @@ export default function LoginPage() {
                 console.warn("Backend login sync notice:", apiData.message);
             }
 
-            router.push("/dashboard");
+            router.push("/");
             router.refresh();
         } catch (err: unknown) {
             const firebaseErr = err as { code?: string; message?: string };

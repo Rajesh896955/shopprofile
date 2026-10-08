@@ -310,7 +310,7 @@ export const TEXTS = {
     city: "City *",
     cityPlaceholder: "e.g. Berlin",
     country: "Country *",
-    countryPlaceholder: "e.g. Germany",
+    countryPlaceholder: "e.g. India",
     phone: "Business Phone Number *",
     phonePlaceholder: "e.g. +49 30 12345678",
     email: "Business Email *",

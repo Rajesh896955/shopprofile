@@ -79,6 +79,7 @@ export default function SignupPage() {
                 console.warn("Backend sync notice:", apiData.message);
             }
 
+            router.push("/");
             router.refresh();
         } catch (err: unknown) {
             const firebaseErr = err as { code?: string; message?: string };
@@ -127,6 +128,7 @@ export default function SignupPage() {
             }
 
 
+            router.push("/");
             router.refresh();
         } catch (err: unknown) {
             const firebaseErr = err as { code?: string; message?: string };

@@ -59,7 +59,7 @@ export default function KioskTemplatePage() {
     const [businessAddress, setBusinessAddress] = useState("")
     const [postalCode, setPostalCode] = useState("")
     const [city, setCity] = useState("")
-    const [country, setCountry] = useState("Germany")
+    const [country, setCountry] = useState("India")
     const [businessPhone, setBusinessPhone] = useState("")
     const [landlineNo, setLandlineNo] = useState("")
     const [businessEmail, setBusinessEmail] = useState("")
@@ -117,7 +117,7 @@ export default function KioskTemplatePage() {
         setBusinessAddress("")
         setPostalCode("")
         setCity("")
-        setCountry("Germany")
+        setCountry("India")
         setBusinessPhone("")
         setLandlineNo("")
         setBusinessEmail("")
@@ -138,7 +138,7 @@ export default function KioskTemplatePage() {
         setBusinessAddress(p.businessAddress || "")
         setPostalCode(p.postalCode || "")
         setCity(p.city || "")
-        setCountry(p.country || "Germany")
+        setCountry(p.country || "India")
         setBusinessPhone(p.businessPhone || "")
         setLandlineNo(p.landlineNo || "")
         setBusinessEmail(p.businessEmail || "")
@@ -458,7 +458,7 @@ export default function KioskTemplatePage() {
             businessAddress: businessAddress.trim(),
             postalCode: postalCode.trim(),
             city: city.trim(),
-            country: country.trim() || "Germany",
+            country: country.trim() || "India",
             businessPhone: businessPhone.trim(),
             landlineNo: landlineNo.trim(),
             businessEmail: businessEmail.trim(),
@@ -482,7 +482,7 @@ export default function KioskTemplatePage() {
             businessAddress: businessAddress.trim(),
             postalCode: postalCode.trim(),
             city: city.trim(),
-            country: country.trim() || "Germany",
+            country: country.trim() || "India",
             businessPhone: businessPhone.trim(),
             landlineNo: landlineNo.trim(),
             businessEmail: businessEmail.trim(),

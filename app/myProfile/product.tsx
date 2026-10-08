@@ -262,7 +262,7 @@ export const ProductCatalogView: React.FC<ProductCatalogViewProps> = ({
                                     <MapPin className="w-3.5 h-3.5 text-[#0052FF] shrink-0" />
                                     <span>
                                         {businessAddress || shopProfile?.businessAddress}, {postalCode || shopProfile?.postalCode}{" "}
-                                        {city || shopProfile?.city}, {country || shopProfile?.country || "Germany"}
+                                        {city || shopProfile?.city}, {country || shopProfile?.country || "India"}
                                     </span>
                                 </div>
 
