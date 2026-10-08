@@ -732,9 +732,11 @@ export default function PublicShopPage({ params }: ShopPageProps) {
                                                         {subtitleText}
                                                     </p>
                                                 )}
-                                                <p className="text-base sm:text-lg font-bold text-[#0052FF] mt-2">
-                                                    {product.price.startsWith("€") || product.price.startsWith("$") ? product.price : `€ ${product.price}`}
-                                                </p>
+                                                {product.price && (
+                                                    <p className="text-base sm:text-lg font-bold text-[#0052FF] mt-2">
+                                                        {product.price.startsWith("€") || product.price.startsWith("$") ? product.price : `€ ${product.price}`}
+                                                    </p>
+                                                )}
                                             </div>
 
                                             {/* Right: Heart Favorite Button */}
@@ -1222,9 +1224,11 @@ export default function PublicShopPage({ params }: ShopPageProps) {
                                         {selectedProduct.name}
                                     </h2>
                                 </div>
-                                <span className="text-lg font-black text-[#0052FF] bg-blue-50 px-2.5 py-0.5 rounded-xl">
-                                    {selectedProduct.price}
-                                </span>
+                                {selectedProduct.price ? (
+                                    <span className="text-lg font-black text-[#0052FF] bg-blue-50 px-2.5 py-0.5 rounded-xl">
+                                        {selectedProduct.price}
+                                    </span>
+                                ) : null}
                             </div>
 
                             {selectedProduct.quantity && (
@@ -1415,9 +1419,11 @@ export default function PublicShopPage({ params }: ShopPageProps) {
                                                         {subtitleText}
                                                     </p>
                                                 )}
-                                                <p className="text-sm font-extrabold text-[#0052FF] mt-1">
-                                                    {product.price.startsWith("€") || product.price.startsWith("$") ? product.price : `€ ${product.price}`}
-                                                </p>
+                                                {product.price && (
+                                                    <p className="text-sm font-extrabold text-[#0052FF] mt-1">
+                                                        {product.price.startsWith("€") || product.price.startsWith("$") ? product.price : `€ ${product.price}`}
+                                                    </p>
+                                                )}
                                             </div>
 
                                             {/* Right: Remove Heart */}

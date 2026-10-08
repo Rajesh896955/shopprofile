@@ -971,7 +971,7 @@ export default function KioskTemplatePage() {
         <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans selection:bg-blue-100 selection:text-blue-900">
 
 
-            <main className="flex-1 pt-14 sm:pt-20 pb-24 px-3 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full relative z-20">
+            <main className="flex-1 pt-3 sm:pt-6 pb-20 px-3 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full relative z-20">
                 {/* ── VIEW 0: WELCOME SCREEN ── */}
                 {viewMode === "welcome" && (
                     <WelcomeScreen t={t} onStart={() => setViewMode("create-profile")} />
