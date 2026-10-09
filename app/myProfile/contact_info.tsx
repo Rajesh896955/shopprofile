@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useState, useEffect } from "react"
 import {
     Building2,
     MapPin,
@@ -16,9 +16,13 @@ import {
     Check,
     X,
     ImageIcon,
-    Share2
+    Share2,
+    AlertTriangle,
+    CheckCircle2
 } from "lucide-react"
-import { OpeningHourItem, ShopProfile, SocialLinks, TEXTS, TIME_OPTIONS } from "./types"
+import { db } from "@/lib/firebase"
+import { collection, getDocs } from "firebase/firestore"
+import { OpeningHourItem, ShopProfile, SocialLinks, TEXTS, TIME_OPTIONS, getOrCreateGuestUserId } from "./types"
 
 // ── Social Media Icons ──
 export function InstagramIcon({ className = "w-4 h-4" }: { className?: string }) {
@@ -128,8 +132,57 @@ export const ContactInfoForm: React.FC<ContactInfoFormProps> = ({
     handleStoreImageUpload,
     handleRemoveStoreImage
 }) => {
+    const [isDuplicateStoreName, setIsDuplicateStoreName] = useState(false)
+    const [isCheckingStoreName, setIsCheckingStoreName] = useState(false)
+
+    // Debounced check for store name uniqueness
+    useEffect(() => {
+        const trimmed = businessName.trim().toLowerCase()
+        if (!trimmed || trimmed.length < 2) {
+            setIsDuplicateStoreName(false)
+            setIsCheckingStoreName(false)
+            return
+        }
+
+        setIsCheckingStoreName(true)
+        const timer = setTimeout(async () => {
+            try {
+                const currentUserId = shopProfile?.userId || getOrCreateGuestUserId()
+                const snap = await getDocs(collection(db, "business-shop-profile"))
+                let foundDuplicate = false
+
+                snap.forEach((docSnap) => {
+                    const data = docSnap.data()
+                    const existingName = (data.businessName || "").trim().toLowerCase()
+                    const isSameProfile = shopProfile?.id && (docSnap.id === shopProfile.id || docSnap.id === shopProfile.id.replace("local-", ""))
+                    const isSameUser = data.userId && data.userId === currentUserId
+
+                    if (existingName === trimmed && !isSameProfile && !isSameUser) {
+                        foundDuplicate = true
+                    }
+                })
+
+                setIsDuplicateStoreName(foundDuplicate)
+            } catch (err) {
+                console.warn("Error checking store name uniqueness:", err)
+            } finally {
+                setIsCheckingStoreName(false)
+            }
+        }, 350)
+
+        return () => clearTimeout(timer)
+    }, [businessName, shopProfile?.id, shopProfile?.userId])
+
+    const onSubmitWrapper = (e: React.FormEvent) => {
+        if (isDuplicateStoreName) {
+            e.preventDefault()
+            return
+        }
+        handleSaveBusinessInfo(e)
+    }
+
     return (
-        <form onSubmit={handleSaveBusinessInfo} className="space-y-8 max-w-4xl mx-auto pb-12">
+        <form onSubmit={onSubmitWrapper} className="space-y-8 max-w-4xl mx-auto pb-12">
             {/* Top Bar Header with Back Navigation */}
             <div className="flex items-center justify-between gap-4 pb-4 border-b border-slate-200">
                 <button
@@ -163,18 +216,55 @@ export const ContactInfoForm: React.FC<ContactInfoFormProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Business Name */}
                     <div className="sm:col-span-2 space-y-1.5">
-                        <label className="block text-xs font-bold text-slate-700">{t.businessName}</label>
+                        <div className="flex items-center justify-between">
+                            <label className="block text-xs font-bold text-slate-700">{t.businessName}</label>
+                            {isCheckingStoreName ? (
+                                <span className="text-[11px] font-bold text-slate-400 flex items-center gap-1">
+                                    <Loader2 className="w-3 h-3 animate-spin text-[#0052FF]" />
+                                    <span>Checking availability...</span>
+                                </span>
+                            ) : isDuplicateStoreName ? (
+                                <span className="text-[11px] font-extrabold text-rose-600 flex items-center gap-1">
+                                    <AlertTriangle className="w-3 h-3 text-rose-600" />
+                                    <span>Name in use</span>
+                                </span>
+                            ) : businessName.trim().length >= 2 ? (
+                                <span className="text-[11px] font-bold text-emerald-600 flex items-center gap-1">
+                                    <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                                    <span>Available</span>
+                                </span>
+                            ) : null}
+                        </div>
                         <div className="relative">
-                            <Building2 className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                            <Building2 className={`w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 ${isDuplicateStoreName ? "text-rose-500" : "text-slate-400"}`} />
                             <input
                                 type="text"
                                 required
                                 placeholder={t.businessNamePlaceholder}
                                 value={businessName}
                                 onChange={(e) => setBusinessName(e.target.value)}
-                                className="w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm font-semibold text-slate-900 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#0052FF] focus:bg-white transition-all"
+                                className={`w-full pl-10 pr-10 py-2.5 text-xs sm:text-sm font-semibold rounded-xl outline-none transition-all ${
+                                    isDuplicateStoreName
+                                        ? "bg-rose-50/40 border-2 border-rose-400 text-rose-950 focus:border-rose-500 focus:bg-white"
+                                        : "bg-slate-50 border border-slate-200 text-slate-900 focus:border-[#0052FF] focus:bg-white"
+                                }`}
                             />
+                            {isCheckingStoreName && (
+                                <Loader2 className="w-4 h-4 text-[#0052FF] animate-spin absolute right-3.5 top-1/2 -translate-y-1/2" />
+                            )}
+                            {!isCheckingStoreName && isDuplicateStoreName && (
+                                <AlertTriangle className="w-4 h-4 text-rose-600 absolute right-3.5 top-1/2 -translate-y-1/2" />
+                            )}
+                            {!isCheckingStoreName && !isDuplicateStoreName && businessName.trim().length >= 2 && (
+                                <CheckCircle2 className="w-4 h-4 text-emerald-600 absolute right-3.5 top-1/2 -translate-y-1/2" />
+                            )}
                         </div>
+                        {isDuplicateStoreName && (
+                            <div className="flex items-center gap-1.5 text-xs font-bold text-rose-600 animate-in fade-in slide-in-from-top-1 duration-200 pt-0.5">
+                                <AlertTriangle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
+                                <span>{t.storeNameInUse || "store name is already in use please change the store name"}</span>
+                            </div>
+                        )}
                     </div>
 
                     {/* Street & House Number */}

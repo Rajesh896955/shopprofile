@@ -13,7 +13,8 @@ import {
     deleteDoc,
     onSnapshot,
     serverTimestamp,
-    Timestamp
+    Timestamp,
+    getDocs
 } from "firebase/firestore"
 import { toast } from "sonner"
 import {
@@ -440,6 +441,28 @@ export default function KioskTemplatePage() {
         const currentUserId = user?.uid || getOrCreateGuestUserId()
         const currentUserEmail = user?.email || businessEmail.trim()
         const now = new Date().toISOString()
+        const trimmedName = businessName.trim().toLowerCase()
+
+        // ── Check if store name already exists in another shop profile ──
+        try {
+            const allProfilesSnap = await getDocs(collection(db, "business-shop-profile"))
+            const isDuplicate = allProfilesSnap.docs.some((docSnap) => {
+                const data = docSnap.data()
+                const existingName = (data.businessName || "").trim().toLowerCase()
+                const isSameProfile = shopProfile?.id && (docSnap.id === shopProfile.id || docSnap.id === shopProfile.id.replace("local-", ""))
+                const isSameUser = data.userId && data.userId === currentUserId
+
+                return existingName === trimmedName && !isSameProfile && !isSameUser
+            })
+
+            if (isDuplicate) {
+                toast.error("store name is already in use please change the store name")
+                setIsSavingProfile(false)
+                return
+            }
+        } catch (checkErr) {
+            console.warn("Could not check duplicate store name in Firestore:", checkErr)
+        }
 
         // 14-Day Free Trial Timestamps
         const trialStartTimestamp = shopProfile?.trialStartDate
@@ -971,7 +994,7 @@ export default function KioskTemplatePage() {
         <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans selection:bg-blue-100 selection:text-blue-900">
 
 
-            <main className="flex-1 pt-3 sm:pt-6 pb-20 px-3 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full relative z-20">
+            <main className="flex-1 pt-3 sm:pt-3.5 lg:pt-4 pb-16 px-3 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full relative z-20">
                 {/* ── VIEW 0: WELCOME SCREEN ── */}
                 {viewMode === "welcome" && (
                     <WelcomeScreen t={t} onStart={() => setViewMode("create-profile")} />

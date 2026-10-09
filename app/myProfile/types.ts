@@ -303,6 +303,7 @@ export const TEXTS = {
     sec1: "1. Business Information",
     businessName: "Business Name *",
     businessNamePlaceholder: "e.g. Gourmet Bistro & Café",
+    storeNameInUse: "store name is already in use please change the store name",
     streetNumber: "Street & House Number *",
     streetNumberPlaceholder: "e.g. Bahnhofstraße 42",
     postalCode: "Postal Code *",
