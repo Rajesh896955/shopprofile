@@ -494,7 +494,7 @@ export default function TermsConditionsPage() {
                         </p>
 
                         <a
-                            href="mailto:support@shopprofile.in"
+                            href="mailto:support@shopprofiles.in"
                             className="mt-5 inline-flex items-center gap-2 rounded-xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
                         >
                             Contact Support

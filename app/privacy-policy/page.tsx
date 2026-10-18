@@ -32,7 +32,7 @@ export default function PrivacyPolicyPage() {
           <section>
             <h2 className="text-lg font-semibold text-slate-900">4. Contact Us</h2>
             <p className="mt-2">
-              If you have questions regarding this privacy policy, please contact us at <a href="mailto:support@shopprofile.in" className="text-indigo-600 font-medium hover:underline">support@shopprofile.in</a>.
+              If you have questions regarding this privacy policy, please contact us at <a href="mailto:support@shopprofiles.in" className="text-indigo-600 font-medium hover:underline">support@shopprofiles.in</a>.
             </p>
           </section>
         </div>
